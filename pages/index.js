@@ -2,7 +2,6 @@ import { createClient } from "contentful";
 import RecipieCard from "../components/RecipeCard";
 
 export default function Recipes({ recipes }) {
-  console.log(recipes);
   return (
     <div className="recipe-list">
       {recipes.map((recipe) => (
@@ -32,6 +31,7 @@ export async function getStaticProps(context) {
   return {
     props: {
       recipes: items,
+      revalidate: 1,
     },
   };
 }

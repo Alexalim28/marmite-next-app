@@ -1,11 +1,12 @@
-import { Link } from "contentful";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 export default function NotFound() {
+  const router = useRouter();
+
   useEffect(() => {
     setTimeout(() => {
-      const router = useRouter();
       router.push("/");
     }, 3000);
   }, []);
@@ -15,7 +16,7 @@ export default function NotFound() {
       <h1>404</h1>
       <h2>Oooops! That page coannot be found :(</h2>
       <p>
-        Redirecting to the <link href="/">Home</link> for more marmite
+        Redirecting to the <Link href="/">Home</Link> for more marmite
         goodness...
       </p>
 

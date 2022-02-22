@@ -1,6 +1,22 @@
 import { createClient } from "contentful";
 import RecipieCard from "../components/RecipeCard";
 
+const client = createClient({
+  space: process.env.CONTENTFUL_SPACE_ID,
+  accessToken: process.env.CONTENTFUL_ACCESSKEY,
+});
+
+export async function getStaticProps() {
+  const { items } = await client.getEntries({ content_type: "recipe" });
+
+  return {
+    props: {
+      recipes: items,
+      revalidate: 1,
+    },
+  };
+}
+
 export default function Recipes({ recipes }) {
   return (
     <div className="recipe-list">
@@ -18,20 +34,4 @@ export default function Recipes({ recipes }) {
       </style>
     </div>
   );
-}
-
-export async function getStaticProps(context) {
-  const client = createClient({
-    space: process.env.CONTENTFUL_SPACE_ID,
-    accessToken: process.env.CONTENTFUL_ACCESSKEY,
-  });
-
-  const { items } = await client.getEntries({ content_type: "recipe" });
-
-  return {
-    props: {
-      recipes: items,
-      revalidate: 1,
-    },
-  };
 }

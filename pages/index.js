@@ -1,5 +1,5 @@
 import { createClient } from "contentful";
-import RecipieCard from "../components/RecipeCard";
+import RecipeCard from "../components/RecipeCard";
 
 export async function getStaticProps() {
   const client = createClient({
@@ -7,31 +7,32 @@ export async function getStaticProps() {
     accessToken: process.env.CONTENTFUL_ACCESSKEY,
   });
 
-  const { items } = await client.getEntries({ content_type: "recipe" });
+  const res = await client.getEntries({ content_type: "recipe" });
 
   return {
     props: {
-      recipes: items,
-      revalidate: 10,
+      recipes: res.items,
     },
+    revalidate: 1,
   };
 }
 
 export default function Recipes({ recipes }) {
+  console.log(recipes);
+
   return (
     <div className="recipe-list">
       {recipes.map((recipe) => (
-        <RecipieCard key={recipe.sys.id} recipe={recipe} />
+        <RecipeCard key={recipe.sys.id} recipe={recipe} />
       ))}
-      <style jsx>
-        {`
-          .recipe-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-gap: 20px 60px;
-          }
-        `}
-      </style>
+
+      <style jsx>{`
+        .recipe-list {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-gap: 20px 60px;
+        }
+      `}</style>
     </div>
   );
 }
